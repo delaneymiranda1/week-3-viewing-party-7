@@ -7,7 +7,12 @@ class UsersController <ApplicationController
 
   def show 
     @user = User.find(params[:id])
-
+    if params[:id].to_s == session[:user_id].to_s
+      @user = User.find(params[:id])
+    else
+      flash[:error] = "Must be logged in or registered to access a user's dashboard."
+      redirect_to '/'
+    end
     # if !current_user
     #   flash[:error] = "You must be logged in or registered to access a user's dashboard."
     #   redirect_to root_path
@@ -16,8 +21,8 @@ class UsersController <ApplicationController
 
   def create 
     user = User.new(user_params)
-    session[:user_id] = user.id
     if user.save
+      session[:user_id] = user.id
       redirect_to user_path(user)
     else  
       flash[:error] = user.errors.full_messages.to_sentence
@@ -46,7 +51,7 @@ class UsersController <ApplicationController
     session.delete(:user_id)
     flash[:success] = "You have successfully logged out."
     redirect_to root_path
- end
+  end
 
   private 
 

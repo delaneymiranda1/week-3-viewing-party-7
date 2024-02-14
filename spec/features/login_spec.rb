@@ -101,7 +101,7 @@ RSpec.describe "Login Page for user", type: :feature do
       visit "http://www.facebook.com"
       visit user_path(user1)
 
-      expect(current_path).to eq(user_path(user1))
+      expect(current_path).to eq('/')
       expect(page).to_not have_button("Log Out")
     end
   end
