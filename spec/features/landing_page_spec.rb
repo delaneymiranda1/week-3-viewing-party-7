@@ -50,4 +50,22 @@ RSpec.describe 'Landing Page' do
 
     expect(page).to_not have_content("Existing Users:")
   end
+
+  it 'does not show logged in users links to exisiting users show pages' do
+    visit login_path 
+
+    user1 = User.create(name: "User One", email: "user1@test.com", password: 'password123', password_confirmation: 'password123')
+    user2 = User.create(name: "User Two", email: "user2@test.com", password: 'password123', password_confirmation: 'password123')
+
+    fill_in "Email:", with: user1.email
+    fill_in "Password:", with: user1.password
+    fill_in "Location:", with: "Denver, CO"
+
+    click_button "Log In"
+
+    visit '/'
+    save_and_open_page
+    expect(page).to_not have_link("user1@test.com")
+    expect(page).to_not have_link("user2@test.com")
+  end
 end
