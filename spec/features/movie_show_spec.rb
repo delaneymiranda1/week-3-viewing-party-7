@@ -33,7 +33,7 @@ RSpec.describe 'Movies Index Page' do
   it 'as a visitor if i try to create a viewing party im redirected back to movie show page' do
     movie_1 = Movie.first
     visit movie_path(@user1, movie_1)
-    save_and_open_page
+    
     click_button "Create a Viewing Party"
 
     expect(current_path).to eq(movie_path(@user1, movie_1))
