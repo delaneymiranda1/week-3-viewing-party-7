@@ -64,10 +64,45 @@ RSpec.describe "Login Page for user", type: :feature do
       expect(page).to have_button("Log Out")
 
       click_button "Log Out"
-      expect(current_path).to eq(login_path)
-      expect(page).to have_button("Log In")
-      expect(page).to have_field "Location:", with: "Denver, CO"
+      expect(current_path).to eq(root_path)
+
+      expect(page).to have_content("Your location: Denver, CO")
     end
   end
   
+  describe "remember a user" do
+    it "user stays in session when they visit a different website and return" do
+      user1 = User.create(name: 'User One', email: 'johndoe@example.com', password: 'password123', password_confirmation: 'password123')
+      visit login_path 
+
+      expect(page).to have_field "Email:"
+      expect(page).to have_field "Password:"
+      expect(page).to have_field "Location:"
+      expect(page).to have_button "Log In"
+
+      fill_in "Email:", with: user1.email
+      fill_in "Password:", with: user1.password
+      fill_in "Location:", with: "Denver, CO"
+
+      click_button "Log In"
+
+      expect(current_path).to eq(user_path(user1))
+
+      visit "http://www.facebook.com"
+      visit user_path(user1)
+
+      expect(current_path).to eq(user_path(user1))
+      expect(page).to have_button("Log Out")
+      click_button "Log Out"
+
+      expect(current_path).to eq(root_path)
+      expect(page).to have_content("You have successfully logged out.")
+
+      visit "http://www.facebook.com"
+      visit user_path(user1)
+
+      expect(current_path).to eq(user_path(user1))
+      expect(page).to_not have_button("Log Out")
+    end
+  end
 end
