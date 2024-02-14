@@ -8,4 +8,6 @@ class User <ApplicationRecord
   has_many :viewing_parties
 
   has_secure_password
+
+  attr_accessor :location
 end 

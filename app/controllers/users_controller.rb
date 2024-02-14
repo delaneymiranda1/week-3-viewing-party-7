@@ -26,6 +26,8 @@ class UsersController <ApplicationController
     user = User.find_by(email: params[:email])
     if user.authenticate(params[:password])
       session[:user_id] = user.id
+      cookies[:user_location] = params[:location]
+      flash[:success] = "Hello, #{user.name}!"
       redirect_to user_path("#{user.id}")
     else
       flash[:error] = "Sorry, your credentials are bad."
@@ -36,6 +38,6 @@ class UsersController <ApplicationController
   private 
 
   def user_params 
-    params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :location)
   end 
 end 

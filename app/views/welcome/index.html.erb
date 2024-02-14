@@ -6,4 +6,8 @@
     <% end %>
 </section>
 
+<% if cookies[:user_location].present? %>
+  <p>Your location: <%= cookies[:user_location] %></p>
+<% end %>
+
 <%= link_to "Log In", login_path %>

@@ -9,5 +9,7 @@
   <%= form.password_field :password %><br>
   <%= form.label :password_confirmation %>
   <%= form.password_field :password_confirmation %><br>
+  <%= form.label :location %>
+  <%= form.text_field :location, value: cookies[:user_location] %>
   <%= form.submit "Create New User" %>
 <% end %>
