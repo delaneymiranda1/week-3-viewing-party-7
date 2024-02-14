@@ -64,8 +64,18 @@ RSpec.describe 'Landing Page' do
     click_button "Log In"
 
     visit '/'
-    save_and_open_page
+    
     expect(page).to_not have_link("user1@test.com")
     expect(page).to_not have_link("user2@test.com")
+  end
+
+  xit 'remains on the landing page if you are not logged in and you try to visit a users show page' do
+    user1 = User.create(name: "User One", email: "user1@test.com", password: 'password123', password_confirmation: 'password123')
+    visit '/'
+    # require 'pry'; binding.pry
+    visit user_path(user1)
+
+    expect(current_path).to eq('/')
+    expect(page).to have_content("You must be logged in or registered to access a user's dashboard.")
   end
 end
