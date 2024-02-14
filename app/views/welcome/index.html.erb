@@ -10,4 +10,8 @@
   <p>Your location: <%= cookies[:user_location] %></p>
 <% end %>
 
+<% if current_user %>
+  <%= button_to "Log Out", logout_path, method: :delete %>
+<% end %>
+
 <%= link_to "Log In", login_path %>
